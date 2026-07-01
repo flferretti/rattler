@@ -127,8 +127,12 @@ struct LogoutArgs {
 struct StatusArgs {
     /// Show endpoint URLs, client ID, and other IdP-introspection fields
     /// that are only useful for debugging.
-    #[clap(short, long)]
-    verbose: bool,
+    ///
+    /// Named `--details` (not `--verbose`/`-v`) so that `Args` can be
+    /// embedded as a subcommand by callers (e.g. pixi) that already define
+    /// a global `-v`/`--verbose` flag on every command.
+    #[clap(long)]
+    details: bool,
 }
 
 #[derive(Parser, Debug)]
@@ -1083,7 +1087,7 @@ async fn status(
             entry.active,
             account.as_deref(),
             now,
-            args.verbose,
+            args.details,
         );
     }
 
